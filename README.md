@@ -8,6 +8,9 @@
 Integrate PostHog product analytics into your Laravel application.
 We can handle exception handling, pushing events from your user and more.
 
+
+> This package is still in its early development, so expect some breaking changes in the future.
+> If you want to contribute, please feel free to open a pull request or an issue.
 ## Installation
 
 You can install the package via composer:
