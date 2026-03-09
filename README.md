@@ -24,8 +24,102 @@ You can then install all package parts using
 php artisan posthog:install
 ```
 ## Usage
-TODO: Add usage instructions here.
+## Events
+You can use the package to push events to PostHog. For example, you can push an event when a user logs in:
 
+```php
+use NietThijmen\LaravelPostHog\LaravelPosthog;
+LaravelPosthog::capture(
+    distinctId: LaravelPosthog::getAuthIdentifier(),
+    event: 'User Logged In',
+    properties: [
+        'email' => auth()->user()->email,
+    ]
+);
+```
+
+There is a shorthand trait for this as well, which you can use in your User model:
+
+```php
+use NietThijmen\LaravelPostHog\Traits\HasEvents;
+class User extends Authenticatable
+{
+    use HasEvents;
+}
+```
+
+Then you can push events like this:
+
+```php
+use App\Models\User;
+$user = User::find(1);
+$user->sendEvent(
+    event: 'User Logged In',
+    properties: [
+        'email' => $user->email,
+    ]
+);
+```
+## Exception Handling
+You can also use the package to handle exceptions and push them to PostHog. 
+To handle application exception you can use our `CaptureExceptions` Class inside your `bootstrap/app.php` file:
+```php
+use Nietthijmen\LaravelPosthog\Helpers\CaptureExceptions;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        //...
+    )
+    ->withMiddleware(function (Middleware $middleware): void {
+        //...
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        CaptureExceptions::captureExceptions($exceptions);
+    })->create();
+```
+
+You can also manually capture exceptions and push them to PostHog:
+
+```php
+use Nietthijmen\LaravelPosthog\LaravelPosthog;
+LaravelPosthog::captureException(
+    new \Exception("Something went wrong!")
+);
+```
+## Feature Flags
+This package fully integrates with [Pennant](https://laravel.com/docs/12.x/pennant) to provide feature flag support. You can use the `posthog` driver to fetch feature flags from PostHog.
+To use the `posthog` driver, you need to add it to your `config/pennant.php` configuration file:
+
+```php
+    'default' => env('PENNANT_STORE', 'posthog'),
+    'stores' => [
+        'posthog' => [
+            'driver' => 'posthog',
+        ],
+    ],
+```
+
+Then you can use the `posthog` driver to check if a feature flag is enabled:
+
+```php
+use Laravel\Pennant\Feature;
+$is_active = Feature::active("My-Test-Feature");
+
+dd($is_active ? "Feature is active" : "Feature is not active");
+```
+## Commands
+The package also has 2 commands, `install` and `test`
+The `install` command will publish the configuration file:
+
+```bash
+php artisan posthog:install
+```
+
+The `test` command will send a test event to PostHog to verify that the integration is working correctly:
+
+```bash
+php artisan posthog:test
+```
 
 ## Credits
 
