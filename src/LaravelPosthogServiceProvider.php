@@ -2,9 +2,9 @@
 
 namespace Nietthijmen\LaravelPosthog;
 
+use Nietthijmen\LaravelPosthog\Commands\LaravelPosthogCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Nietthijmen\LaravelPosthog\Commands\LaravelPosthogCommand;
 
 class LaravelPosthogServiceProvider extends PackageServiceProvider
 {
