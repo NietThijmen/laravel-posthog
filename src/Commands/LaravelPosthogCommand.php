@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Nietthijmen\LaravelPosthog\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelPosthogCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-posthog';
 
     public $description = 'My command';
 
