@@ -4,7 +4,6 @@ namespace Nietthijmen\LaravelPosthog\Commands;
 
 use Illuminate\Console\Command;
 use Nietthijmen\LaravelPosthog\LaravelPosthog;
-use PostHog\PostHog;
 
 class LaravelPosthogCommand extends Command
 {
@@ -17,10 +16,12 @@ class LaravelPosthogCommand extends Command
         try {
             LaravelPosthog::capture('CLI', 'Test Event', ['source' => 'LaravelPosthogCommand']);
 
-            $this->info("Test event sent to PostHog successfully.");
+            $this->info('Test event sent to PostHog successfully.');
+
             return self::SUCCESS;
         } catch (\Exception $e) {
-            $this->error("Failed to send test event to PostHog: " . $e->getMessage());
+            $this->error('Failed to send test event to PostHog: '.$e->getMessage());
+
             return self::FAILURE;
         }
     }

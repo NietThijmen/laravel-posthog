@@ -8,5 +8,5 @@ return [
     'tracing' => [
         'automatic_auth_tracing' => env('POSTHOG_AUTOMATIC_AUTH_TRACING', false),
         'automatic_route_tracing' => env('POSTHOG_AUTOMATIC_ROUTE_TRACING', false),
-    ]
+    ],
 ];

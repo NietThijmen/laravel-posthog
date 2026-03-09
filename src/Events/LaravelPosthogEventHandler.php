@@ -12,5 +12,4 @@ class LaravelPosthogEventHandler
         $user = $event->user;
         LaravelPosthog::identify($user->getAuthIdentifier(), $user->toArray());
     }
-
 }

@@ -10,16 +10,12 @@ class CaptureExceptions
 {
     /**
      * The code to allow application level exceptions to be captured by PostHog.
-     *
-     * @param Exceptions $exceptions
-     * @return void
      */
     public static function captureExceptions(
         Exceptions $exceptions
-    ): void
-    {
+    ): void {
         $exceptions->reportable(static function (Throwable $exception) {
-            $isHandled = !self::makeAnEducatedGuessIfTheExceptionMaybeWasHandled();
+            $isHandled = ! self::makeAnEducatedGuessIfTheExceptionMaybeWasHandled();
             LaravelPosthog::captureException(
                 exception: $exception,
                 isHandled: $isHandled,
@@ -28,13 +24,10 @@ class CaptureExceptions
 
     }
 
-
     /**
      * Try to make an educated guess if the call came from the Laravel `report` helper.
      *
      * @see https://github.com/laravel/framework/blob/008a4dd49c3a13343137d2bc43297e62006c7f29/src/Illuminate/Foundation/helpers.php#L667-L682
-     *
-     * @return bool
      */
     private static function makeAnEducatedGuessIfTheExceptionMaybeWasHandled(): bool
     {
@@ -44,7 +37,7 @@ class CaptureExceptions
         // We are looking for `$handler->report()` to be called from the `report()` function
         foreach ($trace as $frameIndex => $frame) {
             // We need a frame with a class and function defined, we can skip frames missing either
-            if (!isset($frame['class'], $frame['function'])) {
+            if (! isset($frame['class'], $frame['function'])) {
                 continue;
             }
 
@@ -54,7 +47,7 @@ class CaptureExceptions
             }
 
             // Make sure we have a next frame, we could have reached the end of the trace
-            if (!isset($trace[$frameIndex + 1])) {
+            if (! isset($trace[$frameIndex + 1])) {
                 continue;
             }
 
@@ -62,7 +55,7 @@ class CaptureExceptions
             $nextFrame = $trace[$frameIndex + 1];
 
             // If a class was set or the function name is not `report` we can skip this frame
-            if (isset($nextFrame['class']) || !isset($nextFrame['function']) || $nextFrame['function'] !== 'report') {
+            if (isset($nextFrame['class']) || ! isset($nextFrame['function']) || $nextFrame['function'] !== 'report') {
                 continue;
             }
 
@@ -74,5 +67,4 @@ class CaptureExceptions
         // If we reached this point we can be pretty sure the `report` function was not called
         return false;
     }
-
 }

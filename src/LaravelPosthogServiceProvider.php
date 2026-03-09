@@ -2,12 +2,12 @@
 
 namespace Nietthijmen\LaravelPosthog;
 
+use Nietthijmen\LaravelPosthog\Commands\LaravelPosthogCommand;
 use Nietthijmen\LaravelPosthog\Events\LaravelPosthogEventHandler;
 use PostHog\PostHog;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Nietthijmen\LaravelPosthog\Commands\LaravelPosthogCommand;
 
 class LaravelPosthogServiceProvider extends PackageServiceProvider
 {
@@ -34,7 +34,7 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->setName('posthog:install')
-                    ->setDescription("Install the Laravel PostHog package")
+                    ->setDescription('Install the Laravel PostHog package')
                     ->publishConfigFile()
                     ->askToStarRepoOnGitHub('Nietthijmen/laravel-posthog');
             });
@@ -42,6 +42,7 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
 
     /**
      * Initialise the underlying PostHog SDK
+     *
      * @return void
      */
     public function boot()
@@ -51,7 +52,7 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
             PostHog::init(
                 config('posthog.api_key'),
                 [
-                    'host'   => config('posthog.host'),
+                    'host' => config('posthog.host'),
                 ]
             );
         } catch (\Exception $exception) {
@@ -68,7 +69,6 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
                 \Event::listen($event, [LaravelPosthogEventHandler::class, $handler]);
             }
         }
-
 
     }
 }
