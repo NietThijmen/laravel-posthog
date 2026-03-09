@@ -17,8 +17,10 @@
     ],
     "require": {
         "php": "^8.4",
-        "spatie/laravel-package-tools": "^1.16",
-        "illuminate/contracts": "^11.0||^12.0"
+        "illuminate/contracts": "^11.0||^12.0",
+        "posthog/posthog-php": "^3.7",
+        "spatie/backtrace": "^1.8",
+        "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
@@ -34,8 +36,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Nietthijmen\\LaravelPosthog\\": "src/",
-            "Nietthijmen\\LaravelPosthog\\Database\\Factories\\": "database/factories/"
+            "Nietthijmen\\LaravelPosthog\\": "src/"
         }
     },
     "autoload-dev": {
