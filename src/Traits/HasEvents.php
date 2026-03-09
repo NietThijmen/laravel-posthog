@@ -1,8 +1,10 @@
 <?php
 
-namespace Nietthijmen\LaravelPosthog;
+namespace Nietthijmen\LaravelPosthog\Traits;
 
-class HasEvents
+use Nietthijmen\LaravelPosthog\LaravelPosthog;
+
+trait HasEvents
 {
 
     private function getAuthIdentifier()
