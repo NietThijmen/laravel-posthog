@@ -36,7 +36,7 @@ class LaravelPosthog
     public static function capture(string $distinctId, string $event, array $properties = []): void
     {
         try {
-            \PostHog\PostHog::capture([
+            PostHog::capture([
                 'distinctId' => $distinctId,
                 'event' => $event,
                 'properties' => $properties,
@@ -56,7 +56,7 @@ class LaravelPosthog
     public static function identify(string $distinctId, array $properties = []): void
     {
         try {
-            \PostHog\PostHog::identify([
+            PostHog::identify([
                 'distinctId' => $distinctId,
                 'properties' => $properties,
             ]);
