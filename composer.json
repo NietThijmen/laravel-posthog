@@ -2,9 +2,13 @@
     "name": "nietthijmen/laravel-posthog",
     "description": "Integrate Posthog into your laravel application",
     "keywords": [
-        "NietThijmen",
+        "posthog",
         "laravel",
-        "laravel-posthog"
+        "analytics",
+        "feature-flags",
+        "events",
+        "insights",
+        "product-analysis"
     ],
     "homepage": "https://github.com/nietthijmen/laravel-posthog",
     "license": "MIT",
