@@ -17,9 +17,6 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
         'Illuminate\Auth\Events\Login' => [
             'handleLogin',
         ],
-        'Illuminate\Auth\Events\Logout' => [
-            'handleLogout',
-        ],
     ];
 
     public function configurePackage(Package $package): void
