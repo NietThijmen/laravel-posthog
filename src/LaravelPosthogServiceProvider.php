@@ -2,6 +2,8 @@
 
 namespace Nietthijmen\LaravelPosthog;
 
+use Laravel\Pennant\Feature;
+use Laravel\Pennant\PennantServiceProvider;
 use Nietthijmen\LaravelPosthog\Commands\LaravelPosthogCommand;
 use Nietthijmen\LaravelPosthog\Events\LaravelPosthogEventHandler;
 use PostHog\PostHog;
@@ -40,14 +42,8 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
             });
     }
 
-    /**
-     * Initialise the underlying PostHog SDK
-     *
-     * @return void
-     */
-    public function boot()
+    private function initialisePostHog(): void
     {
-        parent::boot();
         try {
             PostHog::init(
                 config('posthog.api_key'),
@@ -58,6 +54,32 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
         } catch (\Exception $exception) {
             // don't throw an error as the user might still be setting up
         }
+    }
+
+    private function maybeInitialisePennant()
+    {
+        if(class_exists("Laravel\Pennant\Feature")) {
+            Feature::extend(
+                'posthog',
+                function ($feature) {
+                    return new PostHogPennantDriver();
+                }
+            );
+        }
+
+    }
+
+    /**
+     * Initialise the underlying PostHog SDK
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+        $this->initialisePostHog();
+        $this->maybeInitialisePennant();
+
     }
 
     public function register()

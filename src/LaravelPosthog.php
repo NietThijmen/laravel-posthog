@@ -4,6 +4,7 @@ namespace Nietthijmen\LaravelPosthog;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PostHog\PostHog;
 use Spatie\Backtrace\Backtrace;
 
 /**
@@ -109,5 +110,33 @@ class LaravelPosthog
             ]
         );
 
+    }
+
+    public static function getFeatureFlag(
+        string $feature,
+        string $distinctId,
+    ): bool|string
+    {
+        $value = PostHog::getFeatureFlag(
+            key: $feature,
+            distinctId: $distinctId,
+        );
+
+        return $value ?? false;
+    }
+
+    public static function getAllFeatureFlags(
+        string $distinctId,
+    ): array
+    {
+        try {
+            return PostHog::getAllFlags(
+                distinctId: $distinctId,
+            );
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed, but don't throw an exception
+            \Log::error("Failed to get all feature flags for distinctId '{$distinctId}': ".$e->getMessage());
+            return [];
+        }
     }
 }
