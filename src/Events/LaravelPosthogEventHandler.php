@@ -11,7 +11,16 @@ class LaravelPosthogEventHandler
         \Illuminate\Auth\Events\Login $event
     ): void {
         $user = $event->user;
+        $request = request();
+
+
         LaravelPosthog::identify($user->getAuthIdentifier(), $user->toArray());
+
+        if($request->session()->has('posthog_distinct_id')) {
+            $distinctId = $request->session()->get('posthog_distinct_id');
+            LaravelPosthog::alias($user->getAuthIdentifier(), $distinctId);
+            $request->session()->forget('posthog_distinct_id');
+        }
     }
 
     public function handleAgentPrompted(

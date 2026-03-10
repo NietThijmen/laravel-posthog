@@ -80,6 +80,29 @@ class LaravelPosthog
     }
 
     /**
+     * Add an alias for a user inside PostHog (anonymous ID to authenticated ID)
+     *
+     * @param string $distinctId
+     * @param string $alias
+     * @return void
+     */
+    public static function alias(
+        string $distinctId,
+        string $alias
+    ): void
+    {
+        try {
+            PostHog::alias([
+                'distinctId' => $distinctId,
+                'alias' => $alias,
+            ]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed, but don't throw an exception
+            \Log::error("Failed to alias user with distinctId '{$distinctId}' to alias '{$alias}': ".$e->getMessage());
+        }
+    }
+
+    /**
      * Listen to exceptions and capture them as events in PostHog
      */
     public static function captureException(
