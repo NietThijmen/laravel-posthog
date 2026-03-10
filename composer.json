@@ -8,7 +8,8 @@
         "feature-flags",
         "events",
         "insights",
-        "product-analysis"
+        "product-analysis",
+        "ai-analytics"
     ],
     "homepage": "https://github.com/nietthijmen/laravel-posthog",
     "license": "MIT",
