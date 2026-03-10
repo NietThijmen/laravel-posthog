@@ -17,6 +17,9 @@ class LaravelPosthogServiceProvider extends PackageServiceProvider
         'Illuminate\Auth\Events\Login' => [
             'handleLogin',
         ],
+        'Laravel\Ai\Events\AgentPrompted' => [
+            'handleAgentPrompted',
+        ]
     ];
 
     public function configurePackage(Package $package): void

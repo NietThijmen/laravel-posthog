@@ -35,6 +35,11 @@ class LaravelPosthog
      */
     public static function capture(string $distinctId, string $event, array $properties = []): void
     {
+        $properties = array_merge($properties, [
+            '$current_url' => request()->fullUrl(),
+            '$active_feature_flags' => self::getAllFeatureFlags($distinctId),
+        ]);
+
         try {
             PostHog::capture([
                 'distinctId' => $distinctId,
@@ -75,7 +80,6 @@ class LaravelPosthog
     ): void {
 
         $backtrace = Backtrace::create();
-        $url = request()->fullUrl();
 
         self::capture(
             self::getAuthIdentifier(),
@@ -83,7 +87,6 @@ class LaravelPosthog
             [
                 '$exception_fingerprint' => $exception->getMessage().' at '.$exception->getFile().':'.$exception->getLine(),
                 '$exception_level' => 'error', // Exception level is not standard in PHP.
-                '$current_url' => $url,
                 '$exception_list' => [
                     [
                         'type' => get_class($exception),
