@@ -41,7 +41,7 @@
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
     },
-    "reccomends": {
+    "suggests": {
         "laravel/pennant": "Use pennant to easily manage feature flags in your application",
         "laravel/ai": "Use Laravel AI to easily send insights to Posthog using AI"
     },
