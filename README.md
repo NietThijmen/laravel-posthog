@@ -107,6 +107,11 @@ $is_active = Feature::active("My-Test-Feature");
 
 dd($is_active ? "Feature is active" : "Feature is not active");
 ```
+## Laravel/AI tracing
+The package also integrates with [Laravel/AI](https://laravel.com/docs/12.x/ai-sdk) to provide tracing support for your AI interactions.
+This tracing is done fully automatically and transparent to your AI interactions, so you don't have to do anything to enable it.
+
+
 ## Commands
 The package also has 2 commands, `install` and `test`
 The `install` command will publish the configuration file:
