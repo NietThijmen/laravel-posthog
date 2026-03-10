@@ -110,7 +110,26 @@ dd($is_active ? "Feature is active" : "Feature is not active");
 ## Laravel/AI tracing
 The package also integrates with [Laravel/AI](https://laravel.com/docs/12.x/ai-sdk) to provide tracing support for your AI interactions.
 This tracing is done fully automatically and transparent to your AI interactions, so you don't have to do anything to enable it.
+## Middleware
+This package has a middleware that should be added to your `bootstrap/app.php` file to automatically capture the authenticated user's distinct id and push it to PostHog:
 
+```php
+use Nietthijmen\LaravelPosthog\Http\Middleware\WithPosthog;
+use \Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        //...
+    )
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            WithPosthog::class,
+        ])
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        
+    })->create();
+```
 
 ## Commands
 The package also has 2 commands, `install` and `test`
