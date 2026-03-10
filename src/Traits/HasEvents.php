@@ -2,6 +2,7 @@
 
 namespace Nietthijmen\LaravelPosthog\Traits;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Nietthijmen\LaravelPosthog\LaravelPosthog;
 
 trait HasEvents
@@ -9,15 +10,13 @@ trait HasEvents
 
     private function getAuthIdentifier()
     {
-        if(property_exists($this, 'getAuthIdentifier')) {
-            return $this->getAuthIdentifier();
+        if (!$this instanceof Authenticatable) {
+            throw new \RuntimeException(
+                static::class . ' must implement ' . Authenticatable::class
+            );
         }
 
-        if(property_exists($this, 'id')) {
-            return $this->id;
-        }
-
-        return null;
+        return LaravelPosthog::getAuthIdentifier($this);
     }
 
     /**
