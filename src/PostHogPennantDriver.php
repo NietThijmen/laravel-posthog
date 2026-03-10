@@ -23,7 +23,7 @@ class PostHogPennantDriver implements Driver, DefinesFeaturesExternally
     )
     {
         if ($scope instanceof Authenticatable) {
-            return $scope->getAuthIdentifier();
+            return LaravelPosthog::getAuthIdentifier($scope);
         }
 
         if ($scope instanceof Model) {
