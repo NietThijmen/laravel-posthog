@@ -2,6 +2,7 @@
 
 namespace Nietthijmen\LaravelPosthog;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use PostHog\PostHog;
@@ -15,15 +16,22 @@ class LaravelPosthog
     /**
      * Get the unique identifier for the current user, or a random UUID if no user is authenticated.
      *
+     * @param Authenticatable|null $user
      * @return string
      */
-    public static function getAuthIdentifier(): mixed
+    public static function getAuthIdentifier(
+        Authenticatable $user = null,
+    ): mixed
     {
-        if (Auth::user()) {
-            return Auth::user()->getAuthIdentifier();
+        if(!$user) {
+            return Str::uuid()->toString();
         }
 
-        return Str::uuid()->toString();
+        if(method_exists($user, 'getPosthogIdentifier')) {
+            return $user->getPosthogIdentifier();
+        }
+
+        return $user->getAuthIdentifier();
     }
 
     /**
@@ -80,9 +88,10 @@ class LaravelPosthog
     ): void {
 
         $backtrace = Backtrace::create();
+        $user = Auth::user();
 
         self::capture(
-            self::getAuthIdentifier(),
+            self::getAuthIdentifier($user),
             '$exception',
             [
                 '$exception_fingerprint' => $exception->getMessage().' at '.$exception->getFile().':'.$exception->getLine(),
